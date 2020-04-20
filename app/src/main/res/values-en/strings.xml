@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mathome</string>
+    <string name="username">Phone, username or email</string>
+    <string name="password">Password</string>
+    <string name="login">Log in</string>
+    <string name="forget">Forgot password?</string>
+    <string name="create_account">Create new account</string>
+    <string name="tituloEmpezar">Join to Mathome</string>
+    <string name="mensajeEmpezar">We help you create an account in a few steps.</string>
+    <string name="btnEmpezar">Start</string>
+    <string name="tienes_cuenta">Do you already have an account?</string>
+    <string name="nombre">Name</string>
+    <string name="como_te_llamas">What is your name?</string>
+    <string name="apellido">Last name</string>
+    <string name="btnSiguiente">Next</string>
+    <string name="cuando_naciste">When you were born?</string>
+    <string name="error_nombre">You must enter your name.</string>
+    <string name="error_apellido">You must enter your last name.</string>
+    <string name="nivel_de_estudio">What is your level of study?</string>
+    <string name="conexion">You have no internet connection</string>
+    <string name="error_nivel_estudio">Debe seleccionar su nivel de estudio</string>
+    <string name="correo_electronico">¿Cuál es tu correo electrónico?</string>
+    <string name="usar_telefono">Usar tu número de celular</string>
+    <string name="ingresar_correo">Ingresar tu correo electrónico</string>
+    <string name="numero_celular">¿Cuál es tu número de teléfono?</string>
+    <string name="ingresar_telefono">Ingresa tu número de teléfono</string>
+    <string name="usar_correo">Usar tu correo electrónico</string>
+    <string name="titulo_genero">¿Con qué género te identificas?</string>
+    <string name="mujer">Mujer</string>
+    <string name="hombre">Hombre</string>
+    <string name="personalizado">Personalizado</string>
+    <string name="ingresar_genero">Ingresa tu género</string>
+    <string name="ingresar_fechaNacimiento">Debe ingresar su fecha de nacimiento</string>
+    <string name="fecha_nacimiento_valida">Ingresa una fecha de nacimiento válida.</string>
+    <string name="seleccionar_genero">Por favor selecciona tu género.</string>
+    <string name="crear_clave">Crea una contraseña</string>
+    <string name="finalizar_registro">Finaliza el registro</string>
+    <string name="terminos_condiciones">Al tocar \"Registrarte\", aceptas nuestras Condiciones y la Política de datos.</string>
+    <string name="registrate">Registrarte</string>
+    <string name="creando">Creando tu cuenta</string>
+</resources>

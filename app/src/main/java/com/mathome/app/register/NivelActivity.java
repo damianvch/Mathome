@@ -1,0 +1,143 @@
+package com.mathome.app.register;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+import com.mathome.app.R;
+import com.loopj.android.http.*;
+import com.mathome.app.entity.Nivel;
+import com.mathome.app.entity.RegistrarUsuario;
+import com.mathome.app.interfaces.LoginActivity;
+import com.mathome.app.security.Token;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
+
+public class NivelActivity extends AppCompatActivity {
+
+    private AsyncHttpClient cliente;
+    private Spinner spinnerNivel;
+
+    Token token = new Token();
+    RegistrarUsuario ru = new RegistrarUsuario();
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.right_in,R.anim.right_out);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_nivel);
+        cliente = new AsyncHttpClient();
+        spinnerNivel = (Spinner) findViewById(R.id.spNivel);
+        llenarSpinner();
+        VerificarRed();
+    }
+
+    private boolean VerificarRed(){
+        boolean estado = true;
+        ConnectivityManager con = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        Boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+        Boolean mobile = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        if(!wifi && !mobile){
+            Toast.makeText(this,R.string.conexion,Toast.LENGTH_SHORT).show();
+            estado = false;
+        }
+        return estado;
+    }
+
+    private void llenarSpinner(){
+        //String url = "http://mathome.me/api/service/get/level.php?";
+        String url = "http://192.168.1.52/api-mathome/service/get/level.php?";
+        String requestToken = "token="+token.getToken();
+        cliente.post(url + requestToken, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if(statusCode == 200){
+                    cargarSpinner(new String(responseBody));
+                }else{
+                    Toast.makeText(NivelActivity.this, "Algo salió mal 1", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+
+    }
+
+    private  void cargarSpinner(String respuesta){
+
+        ArrayList<Nivel> lista = new ArrayList<Nivel>();
+
+        try {
+
+            JSONArray jsonArreglo = new JSONArray(respuesta);
+            for (int i=0; i < jsonArreglo.length();i++){
+
+                Nivel n = new Nivel();
+
+                n.setNivel(jsonArreglo.getJSONObject(i).getString("nivel"));
+                lista.add(n);
+            }
+
+            ArrayAdapter<Nivel> a = new ArrayAdapter<Nivel>(this,android.R.layout.simple_dropdown_item_1line,lista);
+
+            spinnerNivel.setAdapter(a);
+
+
+        }catch (Exception e){
+            Toast.makeText(NivelActivity.this, "Error: "+e.toString(), Toast.LENGTH_LONG).show();
+            // e.printStackTrace();
+        }
+    }
+
+    public void Login(View view){
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
+
+    public void Nacimiento(View view){
+        if(validar()){
+            Intent nacimiento = new Intent(this, NacimientoActivity.class);
+            startActivity(nacimiento);
+            overridePendingTransition(R.anim.left_in,R.anim.left_out);
+        }
+    }
+
+    public boolean validar(){
+
+        boolean retorno = true;
+
+        String sn = spinnerNivel.getSelectedItem().toString();
+
+        if(sn.isEmpty()){
+            Toast.makeText(NivelActivity.this, R.string.error_nivel_estudio, Toast.LENGTH_LONG).show();
+            retorno = false;
+        }
+
+        if(sn.equalsIgnoreCase("SELECCIONAR")){
+            Toast.makeText(NivelActivity.this, R.string.error_nivel_estudio, Toast.LENGTH_LONG).show();
+            retorno = false;
+        }
+
+        return retorno;
+    }
+
+}
