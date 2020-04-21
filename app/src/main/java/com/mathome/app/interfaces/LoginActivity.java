@@ -81,6 +81,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void Menu(View view){
-        Toast.makeText(this,"Contraseña incorrecta",Toast.LENGTH_SHORT).show();
+        Intent menu = new Intent(this, MenuActivity.class);
+        startActivity(menu);
+        finish();
+        //Toast.makeText(this,"Contraseña incorrecta",Toast.LENGTH_SHORT).show();
     }
 }

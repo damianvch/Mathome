@@ -39,4 +39,7 @@
     <string name="terminos_condiciones">Al tocar \"Registrarte\", aceptas nuestras Condiciones y la Política de datos.</string>
     <string name="registrate">Registrarte</string>
     <string name="creando">Creando tu cuenta</string>
+    <string name="btnCancelar">Cancelar</string>
+    <string name="seleccionar_pais">Seleccionar pais</string>
+    <string name="buscar">Buscar...</string>
 </resources>

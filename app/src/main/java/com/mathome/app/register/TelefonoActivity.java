@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.mathome.app.R;
 import com.mathome.app.interfaces.LoginActivity;
+import com.mathome.app.interfaces.PaisActivity;
 
 public class TelefonoActivity extends AppCompatActivity {
 
@@ -26,6 +27,12 @@ public class TelefonoActivity extends AppCompatActivity {
     public void Clave(View view){
         Intent clave = new Intent(this, ClaveActivity.class);
         startActivity(clave);
+        overridePendingTransition(R.anim.left_in,R.anim.left_out);
+    }
+
+    public void Paises(View view){
+        Intent paises = new Intent(this, PaisActivity.class);
+        startActivity(paises);
         overridePendingTransition(R.anim.left_in,R.anim.left_out);
     }
 

@@ -53,7 +53,7 @@ public class NivelActivity extends AppCompatActivity {
         Boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
         Boolean mobile = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
         if(!wifi && !mobile){
-            Toast.makeText(this,R.string.conexion,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),R.string.conexion,Toast.LENGTH_SHORT).show();
             estado = false;
         }
         return estado;
