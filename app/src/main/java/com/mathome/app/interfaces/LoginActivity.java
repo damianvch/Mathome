@@ -110,10 +110,47 @@ public class LoginActivity extends AppCompatActivity {
                     }else if(respuesta.equalsIgnoreCase("Incorrect password")){
                         clave.setError(getString(R.string.clave_incorrecta));
                     }else if(respuesta.equalsIgnoreCase("Successful")){
-
+                        SharedPreferences preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor obj_editor = preferences.edit();
+                        obj_editor.putString("user", usuario.getText().toString());
+                        obj_editor.commit();
+                        pwd();
                         Intent menu = new Intent(LoginActivity.this, MenuActivity.class);
                         startActivity(menu);
                         overridePendingTransition(R.anim.left_in,R.anim.left_out);
+                    }
+                }else{
+                    Toast.makeText(LoginActivity.this, "Algo salió mal 1", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    private void pwd(){
+        String url = "http://mathome.me/api/service/security/password.php?";
+        //String url = "http://192.168.1.52/api-mathome/service/security/password.php?";
+        //String user = usuario.getText().toString().replace(" ","%20");
+        String pwd = clave.getText().toString().replace(" ","%20");
+        String requestToken = "token="+token.getToken()+"&pwd="+pwd;
+
+        cliente.post(url + requestToken, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if(statusCode == 200){
+                    String respuesta = new String(responseBody);
+
+                    if(respuesta.equalsIgnoreCase("No password")){
+                        Toast.makeText(LoginActivity.this, "No hay una contraseña", Toast.LENGTH_SHORT).show();
+                    }else{
+                        SharedPreferences preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor obj_editor = preferences.edit();
+                        obj_editor.putString("pwd", clave.getText().toString());
+                        obj_editor.commit();
                     }
                 }else{
                     Toast.makeText(LoginActivity.this, "Algo salió mal 1", Toast.LENGTH_SHORT).show();
