@@ -36,60 +36,42 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/rbMujer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/mathome"
             android:text="@string/mujer"
             android:textColor="#000"
-            android:onClick="MostrarOcultarGenero"
             android:textSize="15sp" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/rbHombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/mathome"
             android:text="@string/hombre"
             android:textColor="#000"
-            android:onClick="MostrarOcultarGenero"
             android:textSize="15sp" />
 
         <RadioButton
-            android:id="@+id/rbPersonalizado"
+            android:id="@+id/rbNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/mathome"
-            android:text="@string/personalizado"
+            android:text="@string/ninguno"
             android:textColor="#000"
-            android:onClick="MostrarOcultarGenero"
             android:textSize="15sp" />
     </RadioGroup>
 
-    <EditText
-        android:id="@+id/txtPersonalizado"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/ingresar_genero"
-        android:backgroundTint="@color/bordeClaro"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgGenero" />
-
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/btnSiguienteR4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_rounded_login"
-        android:onClick="Correo"
+        android:onClick="onClick"
         android:text="@string/btnSiguiente"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -98,16 +80,16 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPersonalizado" />
+        app:layout_constraintTop_toBottomOf="@+id/rgGenero" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/lblEmpezarLoginR4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:onClick="Login"
+        android:onClick="onClick"
         android:text="@string/tienes_cuenta"
         android:textAlignment="center"
         android:textColor="@color/mathome"
@@ -115,6 +97,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button8"
+        app:layout_constraintTop_toBottomOf="@+id/btnSiguienteR4"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

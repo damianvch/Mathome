@@ -4,16 +4,14 @@ import lombok.Data;
 public class Nivel {
     private  int id;
     private String nivel;
-    private String token;
 
     public Nivel(){
 
     }
 
-    public Nivel(int id, String nivel, String token){
+    public Nivel(int id, String nivel){
         this.id = id;
         this.nivel = nivel;
-        this.token = token;
     }
 
     public int getId() {
@@ -30,14 +28,6 @@ public class Nivel {
 
     public void setNivel(String nivel) {
         this.nivel = nivel;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     @Override

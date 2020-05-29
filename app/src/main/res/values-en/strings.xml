@@ -42,4 +42,19 @@
     <string name="btnCancelar">Cancelar</string>
     <string name="seleccionar_pais">Seleccionar pais</string>
     <string name="buscar">Buscar...</string>
+    <string name="itemHome">Inicio</string>
+    <string name="itemSearch">Buscar</string>
+    <string name="itemHomework">Tarea</string>
+    <string name="itemNotification">Notificaciones</string>
+    <string name="itemAccount">Cuenta</string>
+    <string name="seleccionar">SELECCIONAR</string>
+    <string name="no_decir">Prefiero no decir</string>
+    <string name="error_correo">Debe ingresar un correo electrónico válido</string>
+    <string name="error_correo_exist">El correo electrónico ya existe</string>
+    <string name="error_clave">La contraseña debe tener 6 caracteres como mínimo</string>
+    <string name="error_telefono">Debe ingresar un número de teléfono</string>
+    <string name="ninguno">Ninguno</string>
+    <string name="error_telefono_exist">El teléfono ya se encuentra registrado</string>
+    <string name="clave_incorrecta">Contraseña incorrecta</string>
+    <string name="no_existe_cuenta">No existe la cuenta</string>
 </resources>

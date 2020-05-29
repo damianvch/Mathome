@@ -2,12 +2,15 @@ package com.mathome.app.interfaces;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,6 +43,12 @@ public class PaisActivity extends AppCompatActivity {
     Token token = new Token();
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.right_in,R.anim.right_out);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pais);
@@ -47,6 +56,19 @@ public class PaisActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         llenarPaises();
         buscarOnTextListener();
+    }
+
+    private boolean VerificarRed(){
+        boolean estado = true;
+        ConnectivityManager con = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        Boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+        Boolean mobile = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        if(!wifi && !mobile){
+            Toast.makeText(getApplicationContext(),R.string.conexion,Toast.LENGTH_LONG).show();
+            estado = false;
+        }
+
+        return estado;
     }
 
     private void buscarOnTextListener() {
@@ -69,50 +91,67 @@ public class PaisActivity extends AppCompatActivity {
     }
 
     private void llenarPaises(){
-        String url = "http://192.168.1.52/api-mathome/service/get/country.php?";
-        String requestToken = "token="+token.getToken();
-        cliente.post(url + requestToken, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if(statusCode == 200){
-                    cargarPaises(new String(responseBody));
-                }else{
-                    Toast.makeText(getApplicationContext(), "Algo salió mal 1", Toast.LENGTH_SHORT).show();
+        if(VerificarRed()){
+            //String url = "http://192.168.1.52/api-mathome/service/get/country.php?";
+            String url = "http://mathome.me/api/service/get/country.php?";
+            String requestToken = "token="+token.getToken();
+            cliente.post(url + requestToken, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    if(statusCode == 200){
+                        cargarPaises(new String(responseBody));
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Algo salió mal 1", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     private void cargarPaises(String respuesta) {
 
-        List<Pais> listaPlanetas = new ArrayList<>();
+        final List<Pais> listaPaises = new ArrayList<>();
 
         try {
 
             JSONArray jsonArreglo = new JSONArray(respuesta);
             for (int i=0; i < jsonArreglo.length();i++){
-
                 Pais p = new Pais();
+                p.setId(jsonArreglo.getJSONObject(i).getInt("idPais"));
                 p.setCodigo(jsonArreglo.getJSONObject(i).getString("codigoISO2"));
                 p.setNombre(jsonArreglo.getJSONObject(i).getString("pais"));
                 p.setPrefijo(jsonArreglo.getJSONObject(i).getString("prefijoTelef"));
-                listaPlanetas.add(p);
+                listaPaises.add(p);
             }
 
-            paisAdapter = new PaisAdapter(this, listaPlanetas);
+            paisAdapter = new PaisAdapter(this, listaPaises);
             listViewPaises.setAdapter(paisAdapter);
+
+            listViewPaises.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Pais pe = paisAdapter.getItem(position);
+                    SharedPreferences preferences = getSharedPreferences("registro", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor obj_editor = preferences.edit();
+                    obj_editor.putString("idPais", String.valueOf(pe.getId()));
+                    obj_editor.putString("codigoISO2", pe.getCodigo());
+                    obj_editor.putString("prefijoTelef", pe.getPrefijo());
+                    obj_editor.commit();
+                    Intent telefono = new Intent(PaisActivity.this, TelefonoActivity.class);
+                    startActivity(telefono);
+                    //Toast.makeText(getApplicationContext(), pe.getCodigo()+" ("+pe.getPrefijo()+")", Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error: "+e.toString(), Toast.LENGTH_LONG).show();
-            // e.printStackTrace();
         }
-
 
     }
 
@@ -122,7 +161,7 @@ public class PaisActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onBackPressed(View view) {
+    public void BackPressed(View view) {
         super.onBackPressed();
         overridePendingTransition(R.anim.right_in,R.anim.right_out);
     }

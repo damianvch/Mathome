@@ -45,7 +45,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_rounded_login"
-        android:onClick="NombreApellido"
+        android:onClick="onClick"
         android:text="@string/btnEmpezar"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -60,13 +60,13 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/lblLogin1"
+        android:id="@+id/lblEmpezarLoginR1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:onClick="Login"
+        android:onClick="onClick"
         android:text="@string/tienes_cuenta"
         android:textAlignment="center"
         android:textColor="@color/mathome"

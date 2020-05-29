@@ -2,19 +2,24 @@ package com.mathome.app.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mathome.app.R;
-import com.mathome.app.entity.RegistrarUsuario;
+import com.mathome.app.dto.RegistroUsuarioDTO;
 import com.mathome.app.interfaces.LoginActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NombreActivity extends AppCompatActivity {
 
     EditText nombre,apellido;
-    RegistrarUsuario ru = new RegistrarUsuario();
 
     @Override
     public void onBackPressed() {
@@ -30,25 +35,28 @@ public class NombreActivity extends AppCompatActivity {
         apellido = (EditText)findViewById(R.id.txtApellido);
     }
 
-    public void Login(View view){
-        Intent login = new Intent(this, LoginActivity.class);
-        startActivity(login);
-        finish();
-    }
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.btnSiguienteR2:
+                if(validar()){
+                    SharedPreferences preferences = getSharedPreferences("registro", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor obj_editor = preferences.edit();
+                    String nom = nombre.getText().toString().replace(" ","%20");
+                    String ape = apellido.getText().toString().replace(" ","%20");
+                    obj_editor.putString("nombre", nom);
+                    obj_editor.putString("apellido", ape);
+                    obj_editor.commit();
 
-    public void Nacimiento(View view){
-        if(validar()){
-            Intent nacimiento = new Intent(this, NacimientoActivity.class);
-            startActivity(nacimiento);
-            overridePendingTransition(R.anim.left_in,R.anim.left_out);
-        }
-    }
-
-    public void Nivel(View view){
-        if(validar()){
-            Intent nivel = new Intent(this, NivelActivity.class);
-            startActivity(nivel);
-            overridePendingTransition(R.anim.left_in,R.anim.left_out);
+                    Intent nacimiento = new Intent(this, NacimientoActivity.class);
+                    startActivity(nacimiento);
+                    overridePendingTransition(R.anim.left_in,R.anim.left_out);
+                }
+                break;
+            case R.id.lblEmpezarLoginR2:
+                Intent login = new Intent(this, LoginActivity.class);
+                startActivity(login);
+                finish();
+                break;
         }
     }
 
@@ -68,7 +76,6 @@ public class NombreActivity extends AppCompatActivity {
             apellido.setError(getString(R.string.error_apellido));
             retorno = false;
         }
-
         return retorno;
     }
 

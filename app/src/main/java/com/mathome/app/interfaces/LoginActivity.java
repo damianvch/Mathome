@@ -5,35 +5,44 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.loopj.android.http.*;
 import com.mathome.app.R;
+import com.mathome.app.register.ClaveActivity;
+import com.mathome.app.register.CorreoActivity;
 import com.mathome.app.register.EmpezarActivity;
+import com.mathome.app.security.Token;
+
+import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity {
+    private AsyncHttpClient cliente;
+    Token token = new Token();
 
     private EditText usuario,clave;
     private Button entrar;
-    private AsyncHttpClient cliente;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        cliente = new AsyncHttpClient();
         usuario = findViewById(R.id.txtUsername);
         clave = findViewById(R.id.txtPassword);
         entrar = findViewById(R.id.btnLogin);
         usuario.addTextChangedListener(validarCampos);
         clave.addTextChangedListener(validarCampos);
-
     }
 
     private boolean VerificarRed(){
@@ -75,15 +84,46 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+
+
     public void Empezar(View view){
         Intent empezar = new Intent(this, EmpezarActivity.class);
         startActivity(empezar);
     }
 
-    public void Menu(View view){
-        Intent menu = new Intent(this, MenuActivity.class);
-        startActivity(menu);
-        finish();
-        //Toast.makeText(this,"Contraseña incorrecta",Toast.LENGTH_SHORT).show();
+
+    public void Login(View view){
+        String url = "http://mathome.me/api/service/session/login.php?";
+        //String url = "http://192.168.1.52/api-mathome/service/session/login.php?";
+        String user = usuario.getText().toString().replace(" ","%20");
+        String pwd = clave.getText().toString().replace(" ","%20");
+        String requestToken = "token="+token.getToken()+"&user="+user+"&pwd="+pwd;
+
+        cliente.post(url + requestToken, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if(statusCode == 200){
+                    String respuesta = new String(responseBody);
+
+                    if(respuesta.equalsIgnoreCase("Not exist")){
+                        usuario.setError(getString(R.string.no_existe_cuenta));
+                    }else if(respuesta.equalsIgnoreCase("Incorrect password")){
+                        clave.setError(getString(R.string.clave_incorrecta));
+                    }else if(respuesta.equalsIgnoreCase("Successful")){
+
+                        Intent menu = new Intent(LoginActivity.this, MenuActivity.class);
+                        startActivity(menu);
+                        overridePendingTransition(R.anim.left_in,R.anim.left_out);
+                    }
+                }else{
+                    Toast.makeText(LoginActivity.this, "Algo salió mal 1", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 }
